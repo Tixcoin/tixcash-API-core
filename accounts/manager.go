@@ -26,9 +26,8 @@ import (
 )
 
 // Config contains the settings of the global account manager.
-//
-// TODO(rjl493456442, karalabe, holiman): Get rid of this when account management
-// is removed in favor of Clef.
+// Note: account unlocking via the manager is deprecated; prefer using Clef as
+// an external signer instead.
 type Config struct {
 	InsecureUnlockAllowed bool // Whether account unlocking in insecure environment is allowed
 }
@@ -176,7 +175,6 @@ func (am *Manager) Accounts() []common.Address {
 	addresses := make([]common.Address, 0) // return [] instead of nil if empty
 	for _, wallet := range am.wallets {
 		for _, account := range wallet.Accounts() {
-
 			addresses = append(addresses, account.Address)
 		}
 	}
@@ -220,7 +218,7 @@ func merge(slice []Wallet, wallets ...Wallet) []Wallet {
 	return slice
 }
 
-// drop is the couterpart of merge, which looks up wallets from within the sorted
+// drop is the counterpart of merge, which looks up wallets from within the sorted
 // cache and removes the ones specified.
 func drop(slice []Wallet, wallets ...Wallet) []Wallet {
 	for _, wallet := range wallets {
